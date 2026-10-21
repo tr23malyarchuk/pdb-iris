@@ -1,0 +1,68 @@
+@startuml
+skinparam classAttributeIconSize 0
+title Диаграмма классов ООБД (Система учета успеваемости студентов)
+
+' 1. Наследование от абстрактного класса
+abstract class Person {
+    + FullName: String {required}
+}
+
+' 2. Класс Студента с вычисляемым свойством и связями
+class Student {
+    ' Встроенный объект (Embedded object)
+    + BioPhoto: ImageStream {stream}
+    ' Ограничения (constraints: minval, maxval)
+    + Rating1: Integer {minval = 0, maxval = 50}
+    + Rating2: Integer {minval = 0, maxval = 50}
+    ' Вычисляемое свойство (Calculated property)
+    + TotalRating: Integer {calculated}
+}
+
+' 3. Класс информации о студенте (Связь Один-к-Одному / Ссылка)
+class StudentInfo {
+    ' Ограничения длины строки (minlen, maxlen)
+    + GroupNumber: String {required, minlen = 2, maxlen = 10}
+    + Specialty: String
+    + Institute: String
+    + CourseNumber: Integer
+    + Status: String {valuelist = "Учится, Отчислен, Академ"}
+}
+
+' 4. Класс Преподавателя с коллекциями
+class Teacher {
+    ' Ссылка на встроенный объект информации
+    + Info: TeacherInfo
+    ' Колекція-список простых типов (collection-list)
+    + TargetGroups: List<String>
+}
+
+' 5. Встроенный объект информации преподавателя (Built-in object)
+class TeacherInfo <<serializable>> {
+    + Degree: String
+    + ScienceDegree: String
+    + Position: String
+}
+
+' 6. Класс Курса (Уникальность и связи Один-ко-Многим / Родитель-Потомок)
+class Course {
+    ' Уникальное свойство (Unique)
+    + Title: String {required, unique}
+    + Credits: Integer
+    + HoursLectures: Integer
+    + HoursPractice: Integer
+    + HoursSelf: Integer
+    + ControlType: String {valuelist = "Экзамен, Зачет"}
+}
+
+' Определение связей и отношений
+Person <|-- Student : Наследование
+Person <|-- Teacher : Наследование
+
+Student "1" --> "1" StudentInfo : Ссылка на объект (Reference)
+Teacher *-- TeacherInfo : Встроенный объект (Built-in object)
+
+' Один-ко многим и Родитель-Потомок (Parent-Children / One-Many)
+Teacher "1" o-- "0..*" Course : Ведет курсы (One-Many)
+Course "1" *-- "0..*" Student : Записаны на курс\n(Parent-Children / Collection-Array)
+
+@endum
