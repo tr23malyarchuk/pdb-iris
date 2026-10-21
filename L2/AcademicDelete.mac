@@ -1,0 +1,16 @@
+ROUTINE AcademicDelete
+
+Delete
+    Read "Курс: ", courseName, !
+    Read "ID студента: ", studentId, !
+    Read "Дата (РРРРММДД): ", subDate, !
+    Read "Лабораторна: ", labNum, !
+
+    If $Data(^AcademicCourse(courseName,studentId,subDate,labNum)) {
+        Kill ^AcademicCourse(courseName,studentId,subDate,labNum)
+        Write "Запис видалено.", !
+    } Else {
+        Write "Запис не знайдено.", !
+    }
+
+    Quit

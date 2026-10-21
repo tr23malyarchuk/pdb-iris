@@ -1,0 +1,21 @@
+ROUTINE AcademicQuery
+
+Query
+    Set node=$Query(^AcademicCourse(""))
+
+    For {
+        Quit:node=""
+        Set value=$Get(@node,"")
+
+        Write node," = "
+
+        If $ListValid(value) {
+            Write $List(value,1),",",$List(value,2),",",$List(value,3), !
+        } Else {
+            Write value, !
+        }
+
+        Set node=$Query(@node)
+    }
+
+    Quit

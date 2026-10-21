@@ -1,0 +1,13 @@
+ROUTINE AcademicApp
+
+Main
+    Write "ОБЛІК УСПІШНОСТІ СТУДЕНТІВ", !
+    Write "1-Додати 2-Видалити 3-Відобразити 4-$QUERY", !
+    Read "Оберіть дію: ", action, !
+
+    If action=1 Do Add^AcademicAdd
+    If action=2 Do Delete^AcademicDelete
+    If action=3 Do Display^AcademicDisplay
+    If action=4 Do Query^AcademicQuery
+
+    Quit

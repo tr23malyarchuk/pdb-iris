@@ -1,0 +1,37 @@
+ROUTINE AcademicDisplay
+
+Display
+    Set c=""
+    For {
+    Set c=$Order(^AcademicCourse(c))
+    Quit:c=""
+
+        Set s=""
+        For {
+            Set s=$Order(^AcademicCourse(c,s))
+            Quit:s=""
+
+            Set d=""
+            For {
+                Set d=$Order(^AcademicCourse(c,s,d))
+                Quit:d=""
+
+                Set l=""
+                For {
+                    Set l=$Order(^AcademicCourse(c,s,d,l))
+                    Quit:l=""
+
+                    Set value=$Get(^AcademicCourse(c,s,d,l),"")
+                    Write c," | ",s," | ",d," | ",l," | "
+
+                    If $ListValid(value) {
+                        Write $List(value,1),",",$List(value,2),",",$List(value,3), !
+                    } Else {
+                        Write value, !
+                    }
+                }
+            }
+        }
+    }
+
+    Quit

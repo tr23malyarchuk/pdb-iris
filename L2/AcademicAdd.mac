@@ -1,0 +1,30 @@
+ROUTINE AcademicAdd
+
+Add
+    Read "Курс: ", courseName, !
+    Read "ID студента: ", studentId, !
+    Read "Дата (РРРРММДД): ", subDate, !
+    Read "Лабораторна: ", labNum, !
+    Read "Тема: ", topic, !
+    Read "Оцінка: ", score, !
+    Read "Перевірка (1-Авто, 2-Викладач): ", checkType, !
+
+    If checkType=1 {
+        Set value=topic_","_score_",Passed"
+    } Else {
+        Set value=$ListBuild(topic,score,"Checked by Instructor")
+    }
+
+    Set ^AcademicCourse(courseName,studentId,subDate,labNum)=value
+    Write "Успішно записано!", !
+
+    Write "$Data: ",$Data(^AcademicCourse(courseName,studentId,subDate,labNum)), !
+    Write "$Get: "
+    If checkType=1 {
+        Write $Get(^AcademicCourse(courseName,studentId,subDate,labNum),"Немає"), !
+    } Else {
+        Set savedValue=$Get(^AcademicCourse(courseName,studentId,subDate,labNum),"")
+        Write $List(savedValue,1),",",$List(savedValue,2),",",$List(savedValue,3), !
+    }
+
+    Quit
