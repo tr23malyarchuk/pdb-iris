@@ -7,7 +7,7 @@ ROUTINE Seed
     Set teacher1.FullName = "Mykhailova Iryna Yuriivna"
     Set teacher1.Info.Degree = "PhD"
     Set teacher1.Info.Position = "Associate Professor"
-    Do teacher1.TargetGroups.Insert("TR-61mp, TR-62mp")
+    Do teacher1.TargetGroups.Insert("TR-61mp")
 
     Set course1 = ##class(User.Course).%New()
     Set course1.Title = "Postrelational Databases"
@@ -19,7 +19,7 @@ ROUTINE Seed
     Set teacher2.FullName = "Demchyshyn Anatolii Anatoliiovych"
     Set teacher2.Info.Degree = "PhD"
     Set teacher2.Info.Position = "Associate Professor"
-    Do teacher2.TargetGroups.Insert("TR-61mp, TR-62mp")
+    Do teacher2.TargetGroups.Insert("TR-61mp")
 
     Set course2 = ##class(User.Course).%New()
     Set course2.Title = "Visualization of Graphical and Geometrical Information"
@@ -53,8 +53,12 @@ ROUTINE Seed
     Set student2.Info = info2
     Do student2.BioPhoto.Write("Photo_Data_Reshetniuk")
 
-    Do student1.%Save()
-    Do student2.%Save()
+    Write !, "Save teacher1: ", teacher1.%Save()
+    Write !, "Save teacher2: ", teacher2.%Save()
+    Write !, "Save course1: ", course1.%Save()
+    Write !, "Save course2: ", course2.%Save()
+    Write !, "Save student1: ", student1.%Save()
+    Write !, "Save student2: ", student2.%Save()
 
     Write !, "Database has been successfully filled!"
     Quit
