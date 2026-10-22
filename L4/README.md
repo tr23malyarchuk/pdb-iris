@@ -5,6 +5,8 @@
 **Used IRIS commands**
 
 - Launch IRIS terminal:\
+  `irissession IRIS`\
+  or:\
   `iris terminal IRIS`
 - Compile classes in IRIS terminal:\
   ```

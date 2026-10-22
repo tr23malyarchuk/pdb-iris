@@ -1,42 +1,42 @@
 ROUTINE Show
-    Write !!, "--- СПИСОК КУРСОВ ---"
+    Write !!, "COURSE LIST:"
     Set id = ""
     For {
         Set id = $Order(^User.CourseD(id))
         Quit:id=""
         
         Set course = ##class(User.Course).%OpenId(id)
-        Write !, "Курс #", id, ": ", course.Title, " (", course.ControlType, ")"
+        Write !, "Course #", id, ": ", course.Title, " (", course.ControlType, ")"
         If course.Teacher'="" {
-            Write " | Преподаватель: ", course.Teacher.FullName
+            Write " | Teacher: ", course.Teacher.FullName
         }
     }
 
-    Write !!, "--- СПИСОК СТУДЕНТОВ ---"
+    Write !!, "STUDENT LIST:"
     Set id = ""
     For {
         Set id = $Order(^User.StudentD(id))
         Quit:id=""
         
         Set student = ##class(User.Student).%OpenId(id)
-        Write !, "Студент: ", student.FullName
-        Write " | Группа: ", student.Info.GroupNumber
-        Write " | Общий рейтинг: ", student.TotalRating
+        Write !, "Student: ", student.FullName
+        Write " | Group: ", student.Info.GroupNumber
+        Write " | Total Rating: ", student.TotalRating
         If student.Course'="" {
-            Write " | Записан на курс: ", student.Course.Title
+            Write " | Enrolled in: ", student.Course.Title
         }
     }
 
-    Write !!, "--- СПИСОК ПРЕПОДАВАТЕЛЕЙ ---"
+    Write !!, "TEACHER LIST:"
     Set id = ""
     For {
         Set id = $Order(^User.TeacherD(id))
         Quit:id=""
         
         Set teacher = ##class(User.Teacher).%OpenId(id)
-        Write !, "Преподаватель: ", teacher.FullName
-        Write " | Должность: ", teacher.Info.Position
-        Write " | Всего курсов ведет: ", teacher.Courses.Count()
+        Write !, "Teacher: ", teacher.FullName
+        Write " | Position: ", teacher.Info.Position
+        Write " | Total Courses: ", teacher.Courses.Count()
     }
     
     Write !

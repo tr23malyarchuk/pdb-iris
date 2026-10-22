@@ -1,11 +1,11 @@
 Class User.Course Extends %Persistent
 {
-Property Title As %String [ Required ];
+Property Title As %String(MAXLEN = 100) [ Required ];
 Property Credits As %Integer;
 Property HoursLectures As %Integer;
 Property HoursPractice As %Integer;
 Property HoursSelf As %Integer;
-Property ControlType As %String(VALUELIST = ",Экзамен,Зачет");
+Property ControlType As %String(VALUELIST = ",Exam,Credit");
 
 Index TitleIndex On Title [ Unique ];
 
