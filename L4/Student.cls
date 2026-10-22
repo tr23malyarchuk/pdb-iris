@@ -1,13 +1,15 @@
 Class User.Student Extends (User.Person, %Persistent)
 {
-// Ссылка на сохраненный объект StudentInfo
 Property Info As User.StudentInfo [ Required ];
 
-Property Rating1 As %Integer;
-Property Rating2 As %Integer;
+Property BioPhoto As %Stream.FileBinary;
 
-// Обчислювана властивість (Вычисляемое свойство)
+Property Rating1 As %Integer(MAXVAL = 50, MINVAL = 0);
+Property Rating2 As %Integer(MAXVAL = 50, MINVAL = 0);
+
 Property TotalRating As %Integer [ Calculated ];
+
+Relationship Course As User.Course [ Cardinality = one, Inverse = EnrolledStudents ];
 
 Method TotalRatingGet() As %Integer
 {

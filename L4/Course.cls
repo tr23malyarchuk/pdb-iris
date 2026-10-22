@@ -8,4 +8,10 @@ Property HoursSelf As %Integer;
 Property ControlType As %String(VALUELIST = ",Экзамен,Зачет");
 
 Index TitleIndex On Title [ Unique ];
+
+Relationship Teacher As User.Teacher [ Cardinality = one, Inverse = Courses ];
+
+Relationship EnrolledStudents As User.Student [ Cardinality = many, Inverse = Course ];
+
+Property ExtraNotes As array Of %String;
 }

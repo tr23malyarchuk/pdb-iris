@@ -1,4 +1,4 @@
-Class User.TeacherInfo Extends %Persistent
+Class User.TeacherInfo Extends %SerialObject
 {
 Property Degree As %String;
 Property ScienceDegree As %String;
