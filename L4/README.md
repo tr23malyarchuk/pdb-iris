@@ -7,9 +7,13 @@
 - Launch IRIS terminal:\
   `iris terminal IRIS`
 - Compile classes in IRIS terminal:\
-  `do $system.OBJ.ImportDir("C:\Users\Bohdan\Software\PDB\L4\Classes", "*.cls", "ck", , 1)`
+  ```
+  do $system.OBJ.ImportDir("C:\Users\Bohdan\Software\PDB\L4\Classes", "*.cls", "ck", , 1)
+  ```
 - Compile routines:\
-  `do $system.OBJ.ImportDir("C:\Users\Bohdan\Software\PDB\L4\Routines", "*.mac", "ck", , 1)`
+  ```
+  do $system.OBJ.ImportDir("C:\Users\Bohdan\Software\PDB\L4\Routines", "*.mac", "ck", , 1)
+  ```
 - Run routines:\
   `do ^Seed`\
   `do ^Show`

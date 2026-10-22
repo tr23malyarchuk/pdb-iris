@@ -1,35 +1,43 @@
 ROUTINE Show
-    Write !!, "--- COURSES ---"
+    Write !!, "--- СПИСОК КУРСОВ ---"
     Set id = ""
-    For  Set id = $Order(^User.CourseD(id)) Quit:id=""  Do
-    . Set o = ##class(User.Course).%OpenId(id)
-    . Write !, "Course ", id, ": ", o.Title, ", ", o.ControlType
-    . Write ", Teacher: ", $Select(o.Teacher'="":o.Teacher.FullName, 1:"-")
-    . Write ", Notes: ", o.ExtraNotes.Count()
+    For {
+        Set id = $Order(^User.CourseD(id))
+        Quit:id=""
+        
+        Set course = ##class(User.Course).%OpenId(id)
+        Write !, "Курс #", id, ": ", course.Title, " (", course.ControlType, ")"
+        If course.Teacher'="" {
+            Write " | Преподаватель: ", course.Teacher.FullName
+        }
+    }
 
-    Write !!, "--- STUDENT INFO ---"
+    Write !!, "--- СПИСОК СТУДЕНТОВ ---"
     Set id = ""
-    For  Set id = $Order(^User.StudentInfoD(id)) Quit:id=""  Do
-    . Set o = ##class(User.StudentInfo).%OpenId(id)
-    . Write !, "Info ", id, ": ", o.GroupNumber, ", ", o.Specialty, ", ", o.Status
+    For {
+        Set id = $Order(^User.StudentD(id))
+        Quit:id=""
+        
+        Set student = ##class(User.Student).%OpenId(id)
+        Write !, "Студент: ", student.FullName
+        Write " | Группа: ", student.Info.GroupNumber
+        Write " | Общий рейтинг: ", student.TotalRating
+        If student.Course'="" {
+            Write " | Записан на курс: ", student.Course.Title
+        }
+    }
 
-    Write !!, "--- STUDENTS ---"
+    Write !!, "--- СПИСОК ПРЕПОДАВАТЕЛЕЙ ---"
     Set id = ""
-    For  Set id = $Order(^User.StudentD(id)) Quit:id=""  Do
-    . Set o = ##class(User.Student).%OpenId(id)
-    . Write !, "Student ", id, ": ", o.FullName
-    . Write ", Group: ", o.Info.GroupNumber
-    . Write ", Ratings: ", o.Rating1, "/", o.Rating2
-    . Write ", Total: ", o.TotalRating
-    . Write ", Course: ", $Select(o.Course'="":o.Course.Title, 1:"-")
-    . Write ", Photo size: ", o.BioPhoto.Size
-
-    Write !!, "--- TEACHERS ---"
-    Set id = ""
-    For  Set id = $Order(^User.TeacherD(id)) Quit:id=""  Do
-    . Set o = ##class(User.Teacher).%OpenId(id)
-    . Write !, "Teacher ", id, ": ", o.FullName
-    . Write ", Position: ", o.Info.Position
-    . Write ", Groups: ", o.TargetGroups.Count()
-    . Write ", Courses: ", o.Courses.Count()
+    For {
+        Set id = $Order(^User.TeacherD(id))
+        Quit:id=""
+        
+        Set teacher = ##class(User.Teacher).%OpenId(id)
+        Write !, "Преподаватель: ", teacher.FullName
+        Write " | Должность: ", teacher.Info.Position
+        Write " | Всего курсов ведет: ", teacher.Courses.Count()
+    }
+    
+    Write !
     Quit

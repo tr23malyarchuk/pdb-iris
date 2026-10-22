@@ -1,4 +1,4 @@
-Class User.StudentInfo Extends %Persistent
+Class User.StudentInfo Extends %SerialObject
 {
 Property GroupNumber As %String(MAXLEN = 10, MINLEN = 2) [ Required ];
 Property Specialty As %String;

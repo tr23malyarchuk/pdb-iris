@@ -1,4 +1,4 @@
-Class User.Teacher Extends (User.Person, %Persistent)
+Class User.Teacher Extends (%Persistent, User.Person)
 {
 Property Info As User.TeacherInfo;
 

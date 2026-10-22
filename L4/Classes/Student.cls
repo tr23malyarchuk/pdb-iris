@@ -1,8 +1,8 @@
-Class User.Student Extends (User.Person, %Persistent)
+Class User.Student Extends (%Persistent, User.Person)
 {
 Property Info As User.StudentInfo [ Required ];
 
-Property BioPhoto As %Stream.FileBinary;
+Property BioPhoto As %Stream.GlobalBinary;
 
 Property Rating1 As %Integer(MAXVAL = 50, MINVAL = 0);
 Property Rating2 As %Integer(MAXVAL = 50, MINVAL = 0);
