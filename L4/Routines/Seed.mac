@@ -1,0 +1,99 @@
+ROUTINE Seed
+    ; Очищення даних перед повторним запуском
+    Do ##class(User.Student).%KillExtent()
+    Do ##class(User.StudentInfo).%KillExtent()
+    Do ##class(User.Course).%KillExtent()
+    Do ##class(User.Teacher).%KillExtent()
+
+    ; ---------- Courses ----------
+    Set c1 = ##class(User.Course).%New()
+    Set c1.Title = "Databases"
+    Set c1.Credits = 5
+    Set c1.HoursLectures = 30
+    Set c1.HoursPractice = 20
+    Set c1.HoursSelf = 40
+    Set c1.ControlType = "Экзамен"
+    Do c1.ExtraNotes.SetAt("Лабораторні роботи обов'язкові", "n1")
+    Do c1.%Save()
+
+    Set c2 = ##class(User.Course).%New()
+    Set c2.Title = "Object Databases"
+    Set c2.Credits = 4
+    Set c2.HoursLectures = 24
+    Set c2.HoursPractice = 16
+    Set c2.HoursSelf = 32
+    Set c2.ControlType = "Зачет"
+    Do c2.ExtraNotes.SetAt("Захист практикуму обов'язковий", "n1")
+    Do c2.%Save()
+
+    ; ---------- StudentInfo ----------
+    Set i1 = ##class(User.StudentInfo).%New()
+    Set i1.GroupNumber = "КН-301"
+    Set i1.Specialty = "Computer Science"
+    Set i1.Institute = "ІКТА"
+    Set i1.CourseNumber = 3
+    Set i1.Status = "Учится"
+    Do i1.%Save()
+
+    Set i2 = ##class(User.StudentInfo).%New()
+    Set i2.GroupNumber = "ІП-302"
+    Set i2.Specialty = "Software Engineering"
+    Set i2.Institute = "ІКТА"
+    Set i2.CourseNumber = 3
+    Set i2.Status = "Академ"
+    Do i2.%Save()
+
+    ; ---------- Students ----------
+    Set s1 = ##class(User.Student).%New()
+    Set s1.FullName = "Іваненко Іван Іванович"
+    Set s1.Info = i1
+    Set s1.Rating1 = 45
+    Set s1.Rating2 = 48
+    Set s1.Course = c1
+    Do s1.BioPhoto.Write("Photo data: Ivanenko")
+    Do s1.%Save()
+
+    Set s2 = ##class(User.Student).%New()
+    Set s2.FullName = "Петренко Петро Петрович"
+    Set s2.Info = i2
+    Set s2.Rating1 = 38
+    Set s2.Rating2 = 42
+    Set s2.Course = c2
+    Do s2.BioPhoto.Write("Photo data: Petrenko")
+    Do s2.%Save()
+
+    ; ---------- Teachers ----------
+    Set ti1 = ##class(User.TeacherInfo).%New()
+    Set ti1.Degree = "Доцент"
+    Set ti1.ScienceDegree = "Кандидат технічних наук"
+    Set ti1.Position = "Старший викладач"
+
+    Set t1 = ##class(User.Teacher).%New()
+    Set t1.FullName = "Коваленко Олена Петрівна"
+    Set t1.Info = ti1
+    Do t1.TargetGroups.Insert("КН-301")
+    Do t1.TargetGroups.Insert("ІП-302")
+    Do t1.Courses.SetAt(c1, c1.%Id())
+    Do t1.Courses.SetAt(c2, c2.%Id())
+    Do t1.%Save()
+
+    Set ti2 = ##class(User.TeacherInfo).%New()
+    Set ti2.Degree = "Професор"
+    Set ti2.ScienceDegree = "Доктор технічних наук"
+    Set ti2.Position = "Завідувач кафедри"
+
+    Set t2 = ##class(User.Teacher).%New()
+    Set t2.FullName = "Шевченко Андрій Миколайович"
+    Set t2.Info = ti2
+    Do t2.TargetGroups.Insert("КН-301")
+    Do t2.Courses.SetAt(c1, c1.%Id())
+    Do t2.%Save()
+
+    ; Оновлюємо зв'язок Course -> Teacher
+    Set c1.Teacher = t1
+    Set c2.Teacher = t1
+    Do c1.%Save()
+    Do c2.%Save()
+
+    Write !, "All objects created and saved."
+    Quit

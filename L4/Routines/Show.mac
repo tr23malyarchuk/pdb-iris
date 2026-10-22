@@ -1,0 +1,35 @@
+ROUTINE Show
+    Write !!, "--- COURSES ---"
+    Set id = ""
+    For  Set id = $Order(^User.CourseD(id)) Quit:id=""  Do
+    . Set o = ##class(User.Course).%OpenId(id)
+    . Write !, "Course ", id, ": ", o.Title, ", ", o.ControlType
+    . Write ", Teacher: ", $Select(o.Teacher'="":o.Teacher.FullName, 1:"-")
+    . Write ", Notes: ", o.ExtraNotes.Count()
+
+    Write !!, "--- STUDENT INFO ---"
+    Set id = ""
+    For  Set id = $Order(^User.StudentInfoD(id)) Quit:id=""  Do
+    . Set o = ##class(User.StudentInfo).%OpenId(id)
+    . Write !, "Info ", id, ": ", o.GroupNumber, ", ", o.Specialty, ", ", o.Status
+
+    Write !!, "--- STUDENTS ---"
+    Set id = ""
+    For  Set id = $Order(^User.StudentD(id)) Quit:id=""  Do
+    . Set o = ##class(User.Student).%OpenId(id)
+    . Write !, "Student ", id, ": ", o.FullName
+    . Write ", Group: ", o.Info.GroupNumber
+    . Write ", Ratings: ", o.Rating1, "/", o.Rating2
+    . Write ", Total: ", o.TotalRating
+    . Write ", Course: ", $Select(o.Course'="":o.Course.Title, 1:"-")
+    . Write ", Photo size: ", o.BioPhoto.Size
+
+    Write !!, "--- TEACHERS ---"
+    Set id = ""
+    For  Set id = $Order(^User.TeacherD(id)) Quit:id=""  Do
+    . Set o = ##class(User.Teacher).%OpenId(id)
+    . Write !, "Teacher ", id, ": ", o.FullName
+    . Write ", Position: ", o.Info.Position
+    . Write ", Groups: ", o.TargetGroups.Count()
+    . Write ", Courses: ", o.Courses.Count()
+    Quit
