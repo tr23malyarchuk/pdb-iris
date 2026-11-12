@@ -1,64 +1,11 @@
 ROUTINE Seed
-    Do ##class(User.Student).%KillExtent()
-    Do ##class(User.Course).%KillExtent()
-    Do ##class(User.Teacher).%KillExtent()
+  Do ##class(User.Student).%KillExtent()
+  Do ##class(User.Course).%KillExtent()
+  Do ##class(User.Teacher).%KillExtent()
 
-    Set teacher1 = ##class(User.Teacher).%New()
-    Set teacher1.FullName = "Mykhailova Iryna Yuriivna"
-    Set teacher1.Info.Degree = "PhD"
-    Set teacher1.Info.Position = "Associate Professor"
-    Do teacher1.TargetGroups.Insert("TR-61mp")
+  Write !, "Generating Teachers: ", ##class(User.Teacher).Populate(5, 1)
+  Write !, "Generating Courses: ", ##class(User.Course).Populate(10, 1)
+  Write !, "Generating Students: ", ##class(User.Student).Populate(25, 1)
 
-    Set course1 = ##class(User.Course).%New()
-    Set course1.Title = "Postrelational Databases"
-    Set course1.ControlType = "Credit"
-    Set course1.Teacher = teacher1
-    Do course1.ExtraNotes.SetAt("Requirement: all laboratory works", "n1")
-
-    Set teacher2 = ##class(User.Teacher).%New()
-    Set teacher2.FullName = "Demchyshyn Anatolii Anatoliiovych"
-    Set teacher2.Info.Degree = "PhD"
-    Set teacher2.Info.Position = "Associate Professor"
-    Do teacher2.TargetGroups.Insert("TR-61mp")
-
-    Set course2 = ##class(User.Course).%New()
-    Set course2.Title = "Visualization of Graphical and Geometrical Information"
-    Set course2.ControlType = "Credit"
-    Set course2.Teacher = teacher2
-    Do course2.ExtraNotes.SetAt("Requirement: at least 60% rate for each lab", "n1")
-
-    Set student1 = ##class(User.Student).%New()
-    Set student1.FullName = "Maliarchuk Bohdan Vasylovych"
-    Set student1.Course = course1
-    Set student1.Rating1 = 45
-    Set student1.Rating2 = 48
-    
-    Set info1 = ##class(User.StudentInfo).%New()
-    Set info1.GroupNumber = "TR-61mp"
-    Set info1.Specialty = "F3"
-    Set info1.Status = "Studying"
-    Set student1.Info = info1
-    Do student1.BioPhoto.Write("Photo_Data_Maliarchuk")
-
-    Set student2 = ##class(User.Student).%New()
-    Set student2.FullName = "Reshetniuk Andrii Mykolaiovych"
-    Set student2.Course = course2
-    Set student2.Rating1 = 38
-    Set student2.Rating2 = 42
-    
-    Set info2 = ##class(User.StudentInfo).%New()
-    Set info2.GroupNumber = "TR-61mp"
-    Set info2.Specialty = "F3"
-    Set info2.Status = "Studying"
-    Set student2.Info = info2
-    Do student2.BioPhoto.Write("Photo_Data_Reshetniuk")
-
-    Write !, "Save teacher1: ", teacher1.%Save()
-    Write !, "Save teacher2: ", teacher2.%Save()
-    Write !, "Save course1: ", course1.%Save()
-    Write !, "Save course2: ", course2.%Save()
-    Write !, "Save student1: ", student1.%Save()
-    Write !, "Save student2: ", student2.%Save()
-
-    Write !, "Database has been successfully filled!"
-    Quit
+  Write !, "Database has been successfully populated!"
+  Quit

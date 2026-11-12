@@ -1,4 +1,4 @@
-Class User.Person Extends %RegisteredObject [ Abstract ]
+Class User.Person Extends (%RegisteredObject, %Populate) [Abstract]
 {
-Property FullName As %String [ Required ];
+  Property FullName As %String(POPSPEC = "Name()") [Required];
 }

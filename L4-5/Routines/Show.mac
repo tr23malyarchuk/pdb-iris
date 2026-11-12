@@ -1,43 +1,43 @@
 ROUTINE Show
-    Write !!, "COURSE LIST:"
-    Set id = ""
-    For {
-        Set id = $Order(^User.CourseD(id))
-        Quit:id=""
-        
-        Set course = ##class(User.Course).%OpenId(id)
-        Write !, "Course #", id, ": ", course.Title, " (", course.ControlType, ")"
-        If course.Teacher'="" {
-            Write " | Teacher: ", course.Teacher.FullName
-        }
-    }
+  Write !!, "COURSE LIST:"
+  Set id = ""
+  For {
+    Set id = $Order(^User.CourseD(id))
+    Quit:id=""
 
-    Write !!, "STUDENT LIST:"
-    Set id = ""
-    For {
-        Set id = $Order(^User.StudentD(id))
-        Quit:id=""
-        
-        Set student = ##class(User.Student).%OpenId(id)
-        Write !, "Student: ", student.FullName
-        Write " | Group: ", student.Info.GroupNumber
-        Write " | Total Rating: ", student.TotalRating
-        If student.Course'="" {
-            Write " | Enrolled in: ", student.Course.Title
-        }
+    Set course = ##class(User.Course).%OpenId(id)
+    Write !, "Course #", id, ": ", course.Title, " (", course.ControlType, ")"
+    If course.Teacher '= "" {
+      Write " | Teacher: ", course.Teacher.FullName
     }
+  }
 
-    Write !!, "TEACHER LIST:"
-    Set id = ""
-    For {
-        Set id = $Order(^User.TeacherD(id))
-        Quit:id=""
-        
-        Set teacher = ##class(User.Teacher).%OpenId(id)
-        Write !, "Teacher: ", teacher.FullName
-        Write " | Position: ", teacher.Info.Position
-        Write " | Total Courses: ", teacher.Courses.Count()
+  Write !!, "STUDENT LIST:"
+  Set id = ""
+  For {
+    Set id = $Order(^User.StudentD(id))
+    Quit:id=""
+
+    Set student = ##class(User.Student).%OpenId(id)
+    Write !, "Student: ", student.FullName
+    Write " | Group: ", student.Info.GroupNumber
+    Write " | Total Rating: ", student.TotalRating
+    If student.Course '= "" {
+      Write " | Enrolled in: ", student.Course.Title
     }
-    
-    Write !
-    Quit
+  }
+
+  Write !!, "TEACHER LIST:"
+  Set id = ""
+  For {
+    Set id = $Order(^User.TeacherD(id))
+    Quit:id=""
+
+    Set teacher = ##class(User.Teacher).%OpenId(id)
+    Write !, "Teacher: ", teacher.FullName
+    Write " | Position: ", teacher.Info.Position
+    Write " | Total Courses: ", teacher.Courses.Count()
+  }
+
+  Write !
+  Quit

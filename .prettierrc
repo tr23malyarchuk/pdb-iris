@@ -1,0 +1,5 @@
+{
+  "plugins": ["prettier-plugin-objectscript"],
+  "tabWidth": 2,
+  "printWidth": 100
+}

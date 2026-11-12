@@ -1,30 +1,36 @@
-Class User.Course Extends %Persistent
+Class User.Course Extends (%Persistent, %Populate)
 {
-Property Title As %String(MAXLEN = 100) [ Required ];
-Property Credits As %Integer;
-Property HoursLectures As %Integer;
-Property HoursPractice As %Integer;
-Property HoursSelf As %Integer;
-Property TotalHours As %Integer [ Calculated ]; // callculated property to get total hours
-Property ControlType As %String(VALUELIST = ",Exam,Credit");
+  Property Title As %String(MAXLEN = 100, POPSPEC = "##class(User.PopUtils).CourseTitle()") [
+    Required
+  ];
+  Property Credits As %Integer;
+  Property HoursLectures As %Integer;
+  Property HoursPractice As %Integer;
+  Property HoursSelf As %Integer;
+  Property TotalHours As %Integer [Calculated]; // callculated property to get total hours
+  Property ControlType As %String(VALUELIST = ",Exam,Credit");
 
-Index TitleIndex On Title [ Unique ];
+  Index TitleIndex On Title [Unique];
 
-Relationship Teacher As User.Teacher [ Cardinality = one, Inverse = Courses ];
+  Relationship Teacher As User.Teacher [Cardinality = one, Inverse = Courses];
 
-Relationship EnrolledStudents As User.Student [ Cardinality = many, Inverse = Course ];
+  Relationship EnrolledStudents As User.Student [Cardinality = many, Inverse = Course];
 
-Property ExtraNotes As array Of %String;
+  Property ExtraNotes As array Of %String(POPSPEC = "String(25):3:String(5)");
 
-// Classmethod to calculate total hours
-ClassMethod CalculateTotalHours(lectures As %Integer, practice As %Integer, selfStudy As %Integer) As %Integer
-{
+  // Classmethod to calculate total hours
+  ClassMethod CalculateTotalHours(
+    lectures As %Integer,
+    practice As %Integer,
+    selfStudy As %Integer
+  ) As %Integer
+  {
     Quit (lectures + practice + selfStudy)
-}
+  }
 
-// Call the class method to calculate total hours for the calculated property
-Method TotalHoursGet() As %Integer [ CodeMode = expression, ServerOnly = 1]
-{
+  // Call the class method to calculate total hours for the calculated property
+  Method TotalHoursGet() As %Integer [CodeMode = expression, ServerOnly = 1]
+  {
     ##class(User.Course).CalculateTotalHours(..HoursLectures, ..HoursPractice, ..HoursSelf)
-}
+  }
 }
