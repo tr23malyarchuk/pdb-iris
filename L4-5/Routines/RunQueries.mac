@@ -1,0 +1,48 @@
+ROUTINE RunQueries
+  Write !!, "1. COS-based Query (User.Course:AllCoursesCOS)", !
+  Set rs1 = ##class(%ResultSet).%New("User.Course:AllCoursesCOS")
+  Set sc1 = rs1.Execute()
+  If $System.Status.IsError(sc1) {
+    Do $System.Status.DisplayError(sc1)
+  } Else {
+    While rs1.Next() {
+      Write "ID: ", rs1.Data("ID"), " | Title: ", rs1.Data("Title"), " | Type: ", rs1.Data("ControlType"), " | Hours: ", rs1.Data("TotalHours"), !
+    }
+  }
+
+  Write !!, "2. Parameterized Query with Implicit Join (User.Student:ByGroup)", !
+  Set rs2 = ##class(%ResultSet).%New("User.Student:ByGroup")
+  Set sc2 = rs2.Execute("TP-61mp")
+  If $System.Status.IsError(sc2) {
+    Do $System.Status.DisplayError(sc2)
+  } Else {
+    While rs2.Next() {
+      Write "Student: ", rs2.Data("FullName"), " | Rating: ", rs2.Data("TotalRating"), " | Course: ", rs2.Data("CourseTitle"), " | Teacher: ", rs2.Data("TeacherName"), !
+    }
+  }
+
+  Write !!, "3. Simple Query (User.Teacher:AllTeachers)", !
+  Set rs3 = ##class(%ResultSet).%New("User.Teacher:AllTeachers")
+  Set sc3 = rs3.Execute()
+  If $System.Status.IsError(sc3) {
+    Do $System.Status.DisplayError(sc3)
+  } Else {
+    While rs3.Next() {
+      Write "Teacher: ", rs3.Data("FullName"), " | Position: ", rs3.Data("Position"), " | Degree: ", rs3.Data("Degree"), !
+    }
+  }
+
+  Write !!, "4. Simple Embedded SQL (CountStudentsByTeacher)", !
+  Set c = ##class(User.Course).%OpenId(1)
+  If $IsObject(c) && $IsObject(c.Teacher) {
+    Set tName = c.Teacher.FullName
+    Write "Students enrolled in courses of ", tName, ": ", ##class(User.Student).CountStudentsByTeacher(tName), !
+  }
+
+  Write !!, "5. Embedded SQL with Cursor (PrintTopStudents >= 65)"
+  Do ##class(User.Student).PrintTopStudents(65)
+
+  Write !!, "6. Dynamic SQL (%SQL.Statement - ShowCoursesDynamic)", !
+  Do ##class(User.Course).ShowCoursesDynamic("Exam")
+
+  Quit
