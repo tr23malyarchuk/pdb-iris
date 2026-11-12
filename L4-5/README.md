@@ -4,6 +4,16 @@
 - Create at least 2 objects of each class, set all their properties minding all the constraints (unique, required etc) and save all the objects to the DB.
   Objects and their properties should make sense.
 
+# Laboratory work 5
+
+- Add an always computed property to one of the classes and write a getter for it.
+- Create code for automatic data generation for all classes.
+- Create code for Unit Testing a class/classes where there are unique, required, constrained properties and relationship and check that all tests succeed:
+  - Test creation of the object
+  - Test unique, required, constrained properties
+  - Test behavior when deleting an object with many/children relationship
+  - Test deletion of the object
+
 **Used IRIS commands**
 
 - Launch IRIS terminal:\
@@ -22,12 +32,7 @@
   `do ^Seed`\
   `do ^Show`
 
-# Laboratory work 5
-
-- Add an always computed property to one of the classes and write a getter for it.
-- Create code for automatic data generation for all classes.
-- Create code for Unit Testing a class/classes where there are unique, required, constrained properties and relationship and check that all tests succeed:
-  - Test creation of the object
-  - Test unique, required, constrained properties
-  - Test behavior when deleting an object with many/children relationship
-  - Test deletion of the object
+- Compile tests:\
+  ```
+  do $system.OBJ.Load("C:\Users\Bohdan\Software\PDB\L4-5\Tests\CourseSuite\CourseTests.cls", "ck")
+  ```

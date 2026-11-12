@@ -1,0 +1,9 @@
+ROUTINE RunTests
+  Do $system.OBJ.Load("C:\Users\Bohdan\Software\PDB\L4-5\Tests\CourseSuite\CourseTests.cls", "ck")
+  Set ^UnitTestRoot = "C:\Users\Bohdan\Software\PDB\L4-5\Tests"
+  Set TestSuiteName = "CourseSuite"
+  Set TestsClassName = "CourseSuite.CourseTests"
+  Set test = TestSuiteName_":"_TestsClassName
+  Set quals = "/noload/norecursive/nodelete"
+  Do ##class(%UnitTest.Manager).RunTest(test, quals)
+  Quit
