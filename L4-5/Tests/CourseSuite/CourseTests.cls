@@ -16,7 +16,7 @@ Class CourseSuite.CourseTests Extends %UnitTest.TestCase
     Quit $$$OK
   }
 
-  /// 1. Перевірка успішного створення об'єкту та розрахункового поля
+  /// 1. Test creation of a Course object and its calculated property
   Method TestCreateCourse()
   {
     Set course = ##class(User.Course).%New()
@@ -34,22 +34,22 @@ Class CourseSuite.CourseTests Extends %UnitTest.TestCase
     Do $$$AssertEquals(course.TotalHours, 150, "Calculated TotalHours equals 150")
   }
 
-  /// 2. Перевірка на обов'язковість заповнення, унікальність та шаблон властивостей
+  /// 2. Test unique constraint on Title and required field validation
   Method TestConstraints()
   {
-    // Перевірка обов'язкового поля (Required: Title)
+    // Test required field (Required: Title)
     Set cNoTitle = ##class(User.Course).%New()
     Set statusReq = cNoTitle.%Save()
     Do $$$AssertStatusNotOK(statusReq, "Course requires Title")
 
-    // Перевірка шаблону/обмеження значень (VALUELIST: ControlType)
+    // Test value list constraint (VALUELIST: ControlType)
     Set cBadType = ##class(User.Course).%New()
     Set cBadType.Title = "Valid Course Title"
     Set cBadType.ControlType = "TestWork"
     Set statusVal = cBadType.%Save()
     Do $$$AssertStatusNotOK(statusVal, "ControlType must match VALUELIST (Exam or Credit)")
 
-    // Перевірка унікальності поля (Unique: TitleIndex)
+    // Test unique constraint (Unique: TitleIndex)
     Set c1 = ##class(User.Course).%New()
     Set c1.Title = "Unique Discipline"
     Do $$$AssertStatusOK(c1.%Save(), "First course with unique title saved")
@@ -60,7 +60,7 @@ Class CourseSuite.CourseTests Extends %UnitTest.TestCase
     Do $$$AssertStatusNotOK(statusUniq, "Duplicate course Title is rejected")
   }
 
-  /// 3. Перевірка поведінки при видаленні об'єкту, в якому є відношення (Course <-> EnrolledStudents)
+  /// 3. Test behaviour of deleting a Course object that has a relationship with a Student object
   Method TestDeleteWithRelationship()
   {
     Set course = ##class(User.Course).%New()
@@ -75,12 +75,12 @@ Class CourseSuite.CourseTests Extends %UnitTest.TestCase
     Do $$$AssertStatusOK(student.%Save(), "Student linked to course saved")
     Set studentId = student.%Id()
 
-    // 1. Спроба видалити курс, на який посилається студент, має повернути помилку (ERROR #5823)
+    // attempt to delete the course while it is still referenced by a student
     Set statusDelBlocked = ##class(User.Course).%DeleteId(courseId)
     Do $$$AssertStatusNotOK(statusDelBlocked, "Cannot delete Course while Student references it")
     Do $$$AssertTrue(##class(User.Course).%ExistsId(courseId), "Course still exists in DB")
 
-    // 2. Відв'язуємо студента від курсу, після чого курс має видалитися успішно
+    // unlink the student from the course and then delete the course
     Set student.Course = ""
     Do $$$AssertStatusOK(student.%Save(), "Student unlinked from course")
 
@@ -89,7 +89,7 @@ Class CourseSuite.CourseTests Extends %UnitTest.TestCase
     Do $$$AssertNotTrue(##class(User.Course).%ExistsId(courseId), "Course no longer exists in DB")
   }
 
-  /// 4. Перевірка видалення об'єкту без відношення
+  /// 4. Test deletion of an object without relationships
   Method TestDeleteWithoutRelationship()
   {
     Set course = ##class(User.Course).%New()
