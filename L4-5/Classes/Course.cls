@@ -10,7 +10,7 @@ Class User.Course Extends (%Persistent, %Populate)
   Property TotalHours As %Integer [Calculated]; // callculated property to get total hours
   Property ControlType As %String(VALUELIST = ",Exam,Credit");
 
-  Index TitleIndex On Title [Unique];
+  Index TitleIndex On Title [IdKey, PrimaryKey, Unique];
 
   Relationship Teacher As User.Teacher [Cardinality = one, Inverse = Courses];
 
@@ -79,5 +79,15 @@ Class User.Course Extends (%Persistent, %Populate)
     }
     Set rset = stmt.%Execute(controlType)
     Do rset.%Display()
+  }
+
+  /// 4. Trigger for logging course creation and updates in the ^CourseLog global
+  Trigger LogCourseChanges [Event = INSERT/UPDATE, Foreach = row/object, Time = AFTER]
+  {
+    Set id = {ID}
+    Set op = {%%OPERATION}
+    Set ts = $ZDateTime($Horolog, 3)
+    Set ^CourseLog(id, op, ts, "Title") = {Title}
+    Set ^CourseLog(id, op, ts, "ControlType") = {ControlType}
   }
 }

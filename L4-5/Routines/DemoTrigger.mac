@@ -1,0 +1,27 @@
+ROUTINE DemoTrigger
+  // Previous log entries cleared for demonstration purposes
+  Kill ^CourseLog
+
+  Write !!, "=== 1. Creating a new Course (triggers INSERT) ===", !
+  Set course = ##class(User.Course).%New()
+  Set course.Title = "Trigger Demo Course #"_($Random(900) + 100)
+  Set course.Credits = 4
+  Set course.HoursLectures = 30
+  Set course.HoursPractice = 15
+  Set course.HoursSelf = 75
+  Set course.ControlType = "Credit"
+  Set sc = course.%Save()
+  Write "Save status: ", sc, " | New Course ID: ", course.%Id(), !
+
+  // 1 sec pause for $Horolog timestamp to be differed for UPDATE
+  Hang 1
+
+  Write !!, "=== 2. Updating the Course (triggers UPDATE) ===", !
+  Set course.ControlType = "Exam"
+  Set scUpd = course.%Save()
+  Write "Update status: ", scUpd, !
+
+  Write !!, "=== 3. Inspecting ^CourseLog global ===", !
+  ZWrite ^CourseLog
+
+  Quit
